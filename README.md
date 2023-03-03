@@ -1,6 +1,6 @@
 
 ## Arquitetura
-![Screenshot](ReadmeFiles\Arquitechture.png)
+<img src="https://i.imgur.com/Os7TFiI.png">
 
 ## Net 6 API + Worker
 - Necessário net 6 instalado
