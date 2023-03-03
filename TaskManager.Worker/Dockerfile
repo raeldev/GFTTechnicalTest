@@ -3,6 +3,14 @@
 FROM mcr.microsoft.com/dotnet/runtime:6.0 AS base
 WORKDIR /app
 
+ENV ASPNETCORE_ENVIRONMENT="Development"
+ENV RABBITMQ_CONNECTION_STRING="rabbitqueue"
+ENV RABBITMQ_CONNECTION_USER="guest"
+ENV RABBITMQ_CONNECTION_PASS="guest"
+ENV RABBITMQ_QUEUE_NAME="KanbanTaskQueue"
+ENV MONGODB_CONNECTION_STRING="mongodb+srv://default:guestp@mycluster.ql0r2.gcp.mongodb.net?retryWrites=true&w=majority"
+ENV MONGODB_DATABASE_NAME="TaskManagerDB"
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["TaskManager.Worker/TaskManager.Worker.csproj", "TaskManager.Worker/"]

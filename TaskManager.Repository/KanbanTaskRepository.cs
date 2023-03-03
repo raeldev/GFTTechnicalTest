@@ -66,18 +66,32 @@ namespace TaskManager.Repository
             }
         }
 
-        public async Task<KanbanTask> GetById(int kanbanTaskId)
+        public Task<KanbanTask> GetById(int kanbanTaskId)
         {
             try
             {
                 var collection = MongoDBConnectionFactory<KanbanTask>.GetCollection();
                 var filter = Builders<KanbanTask>.Filter.Eq(t => t.TaskId, kanbanTaskId);
-                var result = await collection.FindAsync(filter);
-                return result.FirstOrDefault();
+                return Task.FromResult(collection.Find(filter).ToList().First());
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Erro ao buscar uma tarefa. OrderId: {kanbanTaskId}", ex);
+                throw;
+            }
+        }
+
+        public Task<List<KanbanTask>> GetAll()
+        {
+            try
+            {
+                var collection = MongoDBConnectionFactory<KanbanTask>.GetCollection();
+                var filter = Builders<KanbanTask>.Filter.Gt(t => t.TaskId, 0);
+                return Task.FromResult(collection.Find(filter).ToList());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erro ao buscar todas as tarefas.", ex);
                 throw;
             }
         }

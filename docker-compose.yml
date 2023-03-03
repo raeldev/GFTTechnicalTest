@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  rabbitqueue:
+    image: rabbitmq:3-management
+    networks:
+      - taskmanagernet
+    expose:
+      - "5672"
+      - "15672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  taskmanager.webapi:
+    image: ${DOCKER_REGISTRY-}taskmanagerwebapi
+    build:
+      context: .
+      dockerfile: TaskManager.WebAPI/Dockerfile
+    ports:
+      - "5020:5020"
+    networks:
+      - taskmanagernet
+    depends_on:
+      - rabbitqueue
+  
+  taskmanager.worker:
+    image: ${DOCKER_REGISTRY-}taskmanagerworker
+    build:
+      context: .
+      dockerfile: TaskManager.Worker/Dockerfile
+    networks:
+      - taskmanagernet
+    depends_on:
+      - rabbitqueue
+
+networks:
+  taskmanagernet:
+    driver: bridge
+    ipam:
+      driver: default

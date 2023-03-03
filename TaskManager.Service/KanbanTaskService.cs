@@ -13,14 +13,14 @@ namespace TaskManager.Service
             _kanbanTaskRepository = kanbanTaskRepository;
         }
 
-        public Task<IEnumerable<KanbanTask>> GetAllKanbanTaskAsync()
+        public async Task<IEnumerable<KanbanTask>> GetAllKanbanTaskAsync()
         {
-            throw new NotImplementedException();
+            return await _kanbanTaskRepository.GetAll();
         }
 
-        public Task<KanbanTask> GetKanbanTaskAsync(int id)
+        public async Task<KanbanTask> GetKanbanTaskAsync(int id)
         {
-            return _kanbanTaskRepository.GetById(id);
+            return await _kanbanTaskRepository.GetById(id);
         }
     }
 }

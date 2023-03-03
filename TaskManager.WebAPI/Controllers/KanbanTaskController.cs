@@ -5,7 +5,7 @@ using TaskManager.Domain.Services;
 namespace TaskManager.WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("tasks")]
     public class KanbanTaskController : ControllerBase
     {
         private readonly ILogger<KanbanTaskController> _logger;
@@ -33,11 +33,19 @@ namespace TaskManager.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] int kanbanTaskId)
+        public async Task<IActionResult> Get([FromQuery] int kanbanTaskId)
         {
-            var result = _kanbanTaskService.GetKanbanTaskAsync(kanbanTaskId);
+            var result = await _kanbanTaskService.GetKanbanTaskAsync(kanbanTaskId);
 
-            return Ok(result);
+            return (result != null) ? Ok(result) : NotFound();
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _kanbanTaskService.GetAllKanbanTaskAsync();
+
+            return (result.Any()) ? Ok(result) : NotFound();
         }
 
         [HttpPut]

@@ -1,5 +1,4 @@
-﻿using MongoDB.Driver;
-using TaskManager.Domain.Model;
+﻿using TaskManager.Domain.Model;
 
 namespace TaskManager.Domain.Repository
 {
@@ -9,5 +8,6 @@ namespace TaskManager.Domain.Repository
         void Update(KanbanTask kanbanTask);
         void Delete(int kanbanTaskId);
         Task<KanbanTask> GetById(int kanbanTaskId);
+        Task<List<KanbanTask>> GetAll();
     }
 }

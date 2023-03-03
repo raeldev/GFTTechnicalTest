@@ -2,7 +2,16 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 80
+EXPOSE 5020
+
+ENV ASPNETCORE_ENVIRONMENT="Development"
+ENV ASPNETCORE_URLS="http://*:5020"
+ENV RABBITMQ_CONNECTION_STRING="rabbitqueue"
+ENV RABBITMQ_CONNECTION_USER="guest"
+ENV RABBITMQ_CONNECTION_PASS="guest"
+ENV RABBITMQ_QUEUE_NAME="KanbanTaskQueue"
+ENV MONGODB_CONNECTION_STRING="mongodb+srv://default:guestp@mycluster.ql0r2.gcp.mongodb.net?retryWrites=true&w=majority"
+ENV MONGODB_DATABASE_NAME="TaskManagerDB"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src

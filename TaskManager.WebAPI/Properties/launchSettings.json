@@ -6,6 +6,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://*:5020",
         "RABBITMQ_CONNECTION_STRING": "localhost",
         "RABBITMQ_CONNECTION_USER": "guest",
         "RABBITMQ_CONNECTION_PASS": "guest",
@@ -23,7 +24,8 @@
       "publishAllPorts": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "RABBITMQ_CONNECTION_STRING": "localhost",
+        "ASPNETCORE_URLS": "http://*:5020",
+        "RABBITMQ_CONNECTION_STRING": "rabbitqueue",
         "RABBITMQ_CONNECTION_USER": "guest",
         "RABBITMQ_CONNECTION_PASS": "guest",
         "RABBITMQ_QUEUE_NAME": "KanbanTaskQueue",
