@@ -1,0 +1,36 @@
+{
+  "profiles": {
+    "TaskManager.WebAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RABBITMQ_CONNECTION_STRING": "localhost",
+        "RABBITMQ_CONNECTION_USER": "guest",
+        "RABBITMQ_CONNECTION_PASS": "guest",
+        "RABBITMQ_QUEUE_NAME": "KanbanTaskQueue",
+        "MONGODB_CONNECTION_STRING": "mongodb+srv://default:guestp@mycluster.ql0r2.gcp.mongodb.net?retryWrites=true&w=majority",
+        "MONGODB_DATABASE_NAME": "TaskManagerDB"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5000"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": false,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RABBITMQ_CONNECTION_STRING": "localhost",
+        "RABBITMQ_CONNECTION_USER": "guest",
+        "RABBITMQ_CONNECTION_PASS": "guest",
+        "RABBITMQ_QUEUE_NAME": "KanbanTaskQueue",
+        "MONGODB_CONNECTION_STRING": "mongodb+srv://default:guestp@mycluster.ql0r2.gcp.mongodb.net?retryWrites=true&w=majority",
+        "MONGODB_DATABASE_NAME": "TaskManagerDB"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
+}
