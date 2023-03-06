@@ -64,5 +64,5 @@ Essa API utiliza um [Cluster free de MongoDB via Atlas Cloud](https://www.mongod
 </br>
 
 ### **To Do**
-- Done docker compose file with network and hostnames config
-- Commit Angular project
+- Done Angular TaskManager project
+- Add Angular Project to docker compose file
