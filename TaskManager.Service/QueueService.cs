@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using MongoDB.Driver.Core.Connections;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Channels;
 using TaskManager.Domain.Enum;
 using TaskManager.Domain.Model;
 using TaskManager.Domain.Repository;
@@ -26,7 +24,12 @@ namespace TaskManager.Service
             _logger = logger;
             _repository = repository;
             _queueName = Environment.GetEnvironmentVariable("RABBITMQ_QUEUE_NAME") ?? "KanbanTaskQueue";
-            _connectionFactory = new ConnectionFactory { HostName = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_STRING") };
+            _connectionFactory = new ConnectionFactory {
+                HostName = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_STRING") ?? "localhost",
+                UserName = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_USER") ?? "guest",
+                Password = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_PASS") ?? "guest",
+                VirtualHost = "/",
+            };
         }
 
         public Task StartProcess(CancellationToken stoppingToken)

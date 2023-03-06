@@ -1,13 +1,13 @@
-using System;
 using TaskManager.Domain.Repository;
 using TaskManager.Domain.Services;
 using TaskManager.Repository;
+using TaskManager.Repository.Factory;
 using TaskManager.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Healthcheck
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks().AddRabbitMQ(RabbitConnectionFactory.GetRabbitMqConnection);
 
 // Add services to the container.
 builder.Services.AddScoped<IKanbanTaskRepository, KanbanTaskRepository>();
@@ -30,7 +30,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/healthcheck");
 
 app.MapControllers();
 

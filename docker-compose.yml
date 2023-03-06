@@ -1,8 +1,9 @@
 version: '3.4'
 
 services:
-  rabbitqueue:
+  rabbitserver:
     image: rabbitmq:3-management
+    hostname: rabbitserver
     networks:
       - taskmanagernet
     expose:
@@ -21,19 +22,29 @@ services:
       - "5020:5020"
     networks:
       - taskmanagernet
+    healthcheck:
+        test: ["CMD","curl", "-f", "http://localhost:5020/healthcheck"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
     depends_on:
-      - rabbitqueue
+      - rabbitserver
   
   taskmanager.worker:
     image: ${DOCKER_REGISTRY-}taskmanagerworker
     build:
       context: .
       dockerfile: TaskManager.Worker/Dockerfile
+    environment:
+      - RABBITMQ_CONNECTION_STRING=rabbitserver
     networks:
       - taskmanagernet
     depends_on:
-      - rabbitqueue
-
+      rabbitserver:
+        condition: service_started
+      taskmanager.webapi:
+        condition: service_healthy
+        
 networks:
   taskmanagernet:
     driver: bridge

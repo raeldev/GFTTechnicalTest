@@ -4,9 +4,11 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 5020
 
+RUN apt update && apt install -y curl
+
 ENV ASPNETCORE_ENVIRONMENT="Development"
 ENV ASPNETCORE_URLS="http://*:5020"
-ENV RABBITMQ_CONNECTION_STRING="rabbitqueue"
+ENV RABBITMQ_CONNECTION_STRING="rabbitserver"
 ENV RABBITMQ_CONNECTION_USER="guest"
 ENV RABBITMQ_CONNECTION_PASS="guest"
 ENV RABBITMQ_QUEUE_NAME="KanbanTaskQueue"

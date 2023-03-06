@@ -17,7 +17,7 @@
       "commandName": "Docker",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
-        "RABBITMQ_CONNECTION_STRING": "rabbitqueue",
+        "RABBITMQ_CONNECTION_STRING": "rabbitserver",
         "RABBITMQ_CONNECTION_USER": "guest",
         "RABBITMQ_CONNECTION_PASS": "guest",
         "RABBITMQ_QUEUE_NAME": "KanbanTaskQueue",
