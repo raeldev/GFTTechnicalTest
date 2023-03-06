@@ -28,16 +28,18 @@ Execute o seguinte comando no diretorio da solution (.sln):
 
 ### **Net 6 WebAPI Container**
 - Execute os comandos abaixo pasta da solution (.sln)
+    - Revise as configuracoes de embiente do Dockerfile (Exemplo Rabbit_ConnString)
     - WebAPI: <code>docker build -t taskmanager-webapi -f TaskManager.WebAPI/Dockerfile .</code> 
-    - WebAPI Run: <code>docker run -d -p 5020:5020 --network taskmanagernet taskmanager-webapi </code> 
+    - WebAPI Run: <code>docker run -d --name TaskManager.WebPI -p 5020:5020 --network taskmanagernet taskmanager-webapi </code> 
     - http://localhost:5020/swagger
 
 </br>
 
 ### **Worker Container**
 - Execute os comandos abaixo pasta da solution (.sln)
+    - Revise as configuracoes de embiente do Dockerfile (Exemplo Rabbit_ConnString)
     - Worker Build: <code>docker build -t taskmanager-worker -f TaskManager.Worker/Dockerfile .</code> 
-    - Worker Run: <code>docker run -d --network taskmanagernet taskmanager-worker </code>
+    - Worker Run: <code>docker run -d --name TaskManager.Worker --network taskmanagernet taskmanager-worker </code>
 
 </br>
 
@@ -58,3 +60,9 @@ Essa API utiliza um [Cluster free de MongoDB via Atlas Cloud](https://www.mongod
 ### **Frontend Angular (with NPM)**
 - É necessario ter Nodejs 14.20.0 ou superior
 - Rode instale as dependências com <code>npm install</code> depois rode com <code>npm run start</code>
+
+</br>
+
+### **To Do**
+- Done docker compose file with network and hostnames config
+- Commit Angular project
