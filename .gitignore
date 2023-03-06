@@ -1,45 +1,46 @@
 ### Angular ###
 ## Angular ##
 # compiled output
-**/dist/
-tmp/
-**/out-tsc/
-**/bazel-out/
+**/dist
+**/tmp
+**/out-tsc
+**/bazel-out
 **/app/**/*.js
 **/app/**/*.js.map
 
 # Node
 **/npm-debug.log
 **/yarn-error.log
-**/node_modules/
-**/bower_components/
+**/node_modules
+**/bower_components
 
 # IDEs and editors
-**/.idea/
+**/.idea
 **/.project
 **/.classpath
-**/.c9/
+**/.c9
 **/*.launch
-**/.settings/
+**/.settings
 **/*.sublime-workspace
 
 # Visual Studio Code
-**/.vscode/*
+**/.vscode
 **/!.vscode/settings.json
 **/!.vscode/tasks.json
 **/!.vscode/launch.json
 **/!.vscode/extensions.json
 **/.history/*
+**/.history
 
 # misc
-**/.sass-cache/
-**/connect.lock/
-**/coverage/
-**/libpeerconnection.log/
+**/.sass-cache
+**/connect.lock
+**/coverage
+**/libpeerconnection.log
 **/npm-debug.log
 **/testem.log
-**/typings/
-**/.angular/
+**/typings
+**/.angular
 **//.angular/cache
 
 # e2e
@@ -47,7 +48,7 @@ tmp/
 **/e2e/*.map
 
 # System Files
-**/.DS_Store/
+**/.DS_Store
 **/Thumbs.db
 
 ### ASPNETCore ###
