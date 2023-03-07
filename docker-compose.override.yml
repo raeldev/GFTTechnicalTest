@@ -1,8 +1,1 @@
 version: '3.4'
-
-services:
-  taskmanager.webapi:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
