@@ -48,12 +48,12 @@ namespace TaskManager.WebAPI.Controllers
             return (result.Any()) ? Ok(result) : NotFound();
         }
 
-        [HttpPut]
-        public IActionResult Update([FromBody] KanbanTask kanbanTask)
+        [HttpPut("{kanbanTaskId}")]
+        public IActionResult Update([FromBody] KanbanTask kanbanTask, [FromRoute] int kanbanTaskId)
         {
-            _queueService.UpdateTask(kanbanTask);
+            _queueService.UpdateTask(kanbanTaskId, kanbanTask);
 
-            _logger.LogInformation($"Update received. TaskId: {kanbanTask.TaskId}");
+            _logger.LogInformation($"Update received. TaskId: {kanbanTaskId}");
 
             return Ok();
         }
