@@ -29,7 +29,7 @@ namespace TaskManager.WebAPI.Controllers
 
             _logger.LogInformation($"Insert received.");
 
-            return Ok();
+            return StatusCode(StatusCodes.Status202Accepted);
         }
 
         [HttpGet]
@@ -55,7 +55,7 @@ namespace TaskManager.WebAPI.Controllers
 
             _logger.LogInformation($"Update received. TaskId: {kanbanTask.TaskId}");
 
-            return Ok();
+            return StatusCode(StatusCodes.Status202Accepted);
         }
 
         [HttpDelete]
@@ -65,7 +65,7 @@ namespace TaskManager.WebAPI.Controllers
 
             _logger.LogInformation($"Delete received. TaskId: {kanbanTaskId}");
 
-            return Ok();
+            return StatusCode(StatusCodes.Status202Accepted);
         }
     }
 }
