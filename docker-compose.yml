@@ -12,6 +12,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+        test: rabbitmq-diagnostics -q status && rabbitmq-diagnostics -q ping && check_port_connectivity
+        interval: 5s
+        timeout: 5s
+        retries: 5
 
   taskmanager.webapi:
     image: ${DOCKER_REGISTRY-}taskmanagerwebapi
@@ -24,12 +29,15 @@ services:
       - taskmanagernet
     healthcheck:
         test: ["CMD","curl", "-f", "http://localhost:5020/healthcheck"]
-        interval: 30s
-        timeout: 10s
+        interval: 5s
+        timeout: 5s
         retries: 5
+    restart: on-failure
     depends_on:
       - rabbitserver
-  
+    links: 
+        - rabbitserver
+
   taskmanager.worker:
     image: ${DOCKER_REGISTRY-}taskmanagerworker
     build:
@@ -39,12 +47,12 @@ services:
       - RABBITMQ_CONNECTION_STRING=rabbitserver
     networks:
       - taskmanagernet
+    restart: on-failure
     depends_on:
-      rabbitserver:
-        condition: service_started
-      taskmanager.webapi:
-        condition: service_healthy
-        
+      - rabbitserver
+    links: 
+        - rabbitserver
+
 networks:
   taskmanagernet:
     driver: bridge
