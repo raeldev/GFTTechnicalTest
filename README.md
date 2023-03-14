@@ -68,6 +68,5 @@ Esse projeto utiliza um [Cluster free de MongoDB via Atlas Cloud](https://www.mo
 </br>
 
 ### **To Do**
-- :white_square_button: Fix WarmUp (Worker can wait Rabbit Startup)
 - :white_square_button: Done Angular TaskManager Service Component
 - :white_square_button: Add Angular Project to docker compose file
