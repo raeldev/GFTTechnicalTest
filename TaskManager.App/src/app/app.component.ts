@@ -1,34 +1,66 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Guid } from "guid-typescript";
-import { Todo } from "src/app/models/todo.model";
+import { KanbanTask } from "src/app/models/KanbanTask.model";
+import { KanbanTaskStatus } from './enums/KanbanTaskStatus.enum';
+import { ToastrService } from 'ngx-toastr';
+import { KanbanTaskService } from './services/kanban-task.service';
+
 @Component({
-selector: 'app-root',
-templateUrl: './app.component.html',
-styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-todos: Todo[] = []
 
+    tasks: KanbanTask[] = [];
 
-onSubmit(form: NgForm){
-let todo = new Todo(Guid.create(), form.value.title, false);
-this.todos.push(todo);
-form.resetForm();
-}
+    constructor(public service: KanbanTaskService,
+        private toastr: ToastrService) { }
 
+    onSubmit(form: NgForm) {
+        if (!form.value.title || !form.value.conclusionDate)
+            this.toastr.error("É necessário um título");
 
-onComplete(id: Guid){
-let todo = this.todos.filter(x=>x.id === id)[0];
-todo.isComplete = true;
-}
+        if (!form.value.conclusionDate)
+            this.toastr.error("É necessário uma data de conclusão");
 
+        let kanbanTask = new KanbanTask(form.value.title, KanbanTaskStatus.Doing, form.value.conclusionDate);
+        this.onInsert(kanbanTask, form);
+    }
 
-onDelete(id: Guid){
-let todo = this.todos.filter(x=>x.id === id)[0];
-let index = this.todos.indexOf(todo,0);
-if(index > -1){
-this.todos.splice(index,1);
-}
-}
+    onInsert(kanbanTask: KanbanTask, formData: NgForm) {
+        this.service.postKanbanTask(kanbanTask).subscribe(
+            res => {
+                formData.form.reset();
+                this.service.refreshList();
+                this.toastr.success("Tarefa Criada", "Kanban Task");
+            },
+            err => { console.log(err); }
+        );
+    }
+
+    onComplete(kanbanTask: KanbanTask) {
+        kanbanTask.status = KanbanTaskStatus.Done;
+        this.updateTask(kanbanTask);
+    }
+
+    onDelete(taksId: number) {
+        this.service.deleteKanbanTask(taksId).subscribe(
+            res => {
+                this.service.refreshList();
+                this.toastr.success("Tarefa Excluída", "Kanban Task");
+            },
+            err => { console.log(err); }
+        );
+    }
+
+    updateTask(kanbanTask: KanbanTask) {
+        this.service.putKanbanTask(kanbanTask).subscribe(
+            res => {
+                this.service.refreshList();
+                this.toastr.success("Tarefa Atualizada", "Kanban Task");
+            },
+            err => { console.log(err); }
+        );
+    }
 }

@@ -21,7 +21,7 @@ font-size: 18px !important;
 }
 
 
-.todo-list li
+.task-list li
 {
 margin-top: 5px;
 border: 1px solid #bbb;
@@ -29,7 +29,7 @@ padding: 5px 10px;
 }
 
 
-.todo-list li div
+.task-list li div
 {
 display: flex;
 flex-direction: row;
@@ -37,7 +37,7 @@ justify-content: space-between;
 }
 
 
-.todo-list button
+.task-list button
 {
 margin-left: 5px;
 }
