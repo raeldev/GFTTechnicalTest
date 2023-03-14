@@ -7,6 +7,7 @@
         "RABBITMQ_CONNECTION_STRING": "localhost",
         "RABBITMQ_CONNECTION_USER": "guest",
         "RABBITMQ_CONNECTION_PASS": "guest",
+        "RABBITMQ_CONNECTION_RETRIES": "3",
         "RABBITMQ_QUEUE_NAME": "KanbanTaskQueue",
         "MONGODB_CONNECTION_STRING": "mongodb+srv://default:guestp@mycluster.ql0r2.gcp.mongodb.net?retryWrites=true&w=majority",
         "MONGODB_DATABASE_NAME": "TaskManagerDB"
@@ -20,6 +21,7 @@
         "RABBITMQ_CONNECTION_STRING": "rabbitserver",
         "RABBITMQ_CONNECTION_USER": "guest",
         "RABBITMQ_CONNECTION_PASS": "guest",
+        "RABBITMQ_CONNECTION_RETRIES": "3",
         "RABBITMQ_QUEUE_NAME": "KanbanTaskQueue",
         "MONGODB_CONNECTION_STRING": "mongodb+srv://default:guestp@mycluster.ql0r2.gcp.mongodb.net?retryWrites=true&w=majority",
         "MONGODB_DATABASE_NAME": "TaskManagerDB"

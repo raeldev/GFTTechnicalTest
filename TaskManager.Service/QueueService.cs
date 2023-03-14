@@ -1,6 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Exceptions;
+using System;
+using System.ComponentModel;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using TaskManager.Domain.Enum;
@@ -15,6 +20,7 @@ namespace TaskManager.Service
         private readonly ILogger<QueueService> _logger;
         private readonly IKanbanTaskRepository _repository;
         private readonly string _queueName;
+        private readonly int _maxRetries;
         private readonly ConnectionFactory _connectionFactory;
 
         public QueueService(
@@ -24,7 +30,9 @@ namespace TaskManager.Service
             _logger = logger;
             _repository = repository;
             _queueName = Environment.GetEnvironmentVariable("RABBITMQ_QUEUE_NAME") ?? "KanbanTaskQueue";
-            _connectionFactory = new ConnectionFactory {
+            _maxRetries = Int16.TryParse(Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_RETRIES"), out short maxRt) ? maxRt : 2;
+            _connectionFactory = new ConnectionFactory
+            {
                 HostName = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_STRING") ?? "localhost",
                 UserName = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_USER") ?? "guest",
                 Password = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_PASS") ?? "guest",
@@ -36,7 +44,7 @@ namespace TaskManager.Service
         {
             while (!stoppingToken.IsCancellationRequested)
             { 
-                var channel = this.CreateChannel();
+                var channel = this.EstablishChannel();
                 channel.QueueDeclare(queue: _queueName,
                                         durable: false,
                                         exclusive: false,
@@ -87,15 +95,9 @@ namespace TaskManager.Service
             return Task.CompletedTask;
         }
 
-        private IModel CreateChannel()
-        {
-            var connection = _connectionFactory.CreateConnection();
-            return connection.CreateModel();
-        }
-
         public void InsertTask(KanbanTask kanbanTask)
         {
-            using var channel = CreateChannel();
+            using var channel = EstablishChannel();
             var kanbanTaskEvent = new KanbanTaskEvent { KanbanTask = kanbanTask, EventType = EventType.Insert };
             var json = JsonSerializer.Serialize(kanbanTaskEvent);
             var body = Encoding.UTF8.GetBytes(json);
@@ -108,7 +110,7 @@ namespace TaskManager.Service
 
         public void UpdateTask(KanbanTask kanbanTask)
         {
-            using var channel = CreateChannel();
+            using var channel = EstablishChannel();
             var kanbanTaskEvent = new KanbanTaskEvent { KanbanTask = kanbanTask, EventType = EventType.Update };
             var json = JsonSerializer.Serialize(kanbanTaskEvent);
             var body = Encoding.UTF8.GetBytes(json);
@@ -121,7 +123,7 @@ namespace TaskManager.Service
 
         public void DeleteTask(int kanbanTaskId)
         {
-            using var channel = CreateChannel();
+            using var channel = EstablishChannel();
             var kanbanTaskEvent = new KanbanTaskEvent { KanbanTask = new KanbanTask { TaskId = kanbanTaskId }, EventType = EventType.Delete };
             var json = JsonSerializer.Serialize(kanbanTaskEvent);
             var body = Encoding.UTF8.GetBytes(json);
@@ -130,6 +132,26 @@ namespace TaskManager.Service
                                 routingKey: _queueName,
                                 basicProperties: null,
                                 body: body);
+        }
+
+        private IModel EstablishChannel()
+        {
+            var _retrySecondsInterval = 5;
+            var retryPolicy = Policy.Handle<BrokerUnreachableException>()
+                .WaitAndRetry(retryCount: _maxRetries, sleepDurationProvider: (attemptCount) => TimeSpan.FromSeconds(attemptCount * _retrySecondsInterval),
+                onRetry: (exception, sleepDuration, attemptNumber, context) =>
+                {
+                    _logger.LogInformation($"Exception error. Retrying in {sleepDuration}. {attemptNumber} / {_maxRetries}. Exception-Message: {exception.Message}");
+                });
+
+            var execution = retryPolicy.ExecuteAndCapture(() =>
+            {
+                return _connectionFactory
+                .CreateConnection()
+                .CreateModel();
+            });
+
+            return execution.Result;
         }
     }
 }
