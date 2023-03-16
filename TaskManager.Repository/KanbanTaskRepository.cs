@@ -40,7 +40,8 @@ namespace TaskManager.Repository
 
                 var update = Builders<KanbanTask>.Update
                     .Set(t => t.Description, kanbanTask.Description)
-                    .Set(t => t.ConclusionDate, kanbanTask.ConclusionDate);
+                    .Set(t => t.ConclusionDate, kanbanTask.ConclusionDate)
+                    .Set(t => t.Status, kanbanTask.Status);
 
                 collection.UpdateOne(filter, update);
             }
