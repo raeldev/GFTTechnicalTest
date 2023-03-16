@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
                 }, this.seconds * 1000);
 
                 this.toastr.success("Criando Tarefa", "Kanban Task");
+                this.tasks.push(kanbanTask);
             },
             err => { console.log(err); }
         );
@@ -62,8 +63,8 @@ export class AppComponent implements OnInit {
         this.updateTask(kanbanTask);
     }
 
-    onDelete(taksId: number) {
-        this.service.deleteKanbanTask(taksId).subscribe(
+    onDelete(taskId: number) {
+        this.service.deleteKanbanTask(taskId).subscribe(
             res => {
                 
                 // wait worker persist
@@ -72,6 +73,7 @@ export class AppComponent implements OnInit {
                 }, this.seconds * 1000);
 
                 this.toastr.success("Excluindo Tarefa", "Kanban Task");
+                this.tasks = this.tasks.filter(x => x.taskId !== taskId);
             },
             err => { console.log(err); }
         );
@@ -94,6 +96,11 @@ export class AppComponent implements OnInit {
 
     checkTaskDone(kanbanTask: KanbanTask) {
         return kanbanTask.status == KanbanTaskStatus.Done
+    }
+
+    formatDate(conclusionDate: Date) : string {
+        let date = new Date(conclusionDate.toString());
+        return `${date.getUTCDate().toString().padStart(2, '0')}/${date.getUTCMonth().toString().padStart(2, '0')}`;
     }
 
     async RefreshList() {

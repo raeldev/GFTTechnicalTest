@@ -21,7 +21,8 @@
     <ul class="task-list" *ngFor="let task of tasks">
         <li *ngIf="!checkTaskDone(task)">
             <div>
-                <div class="label">{{this.task.taskId}} - {{this.task.description}}</div>
+                <div class="date">{{formatDate(this.task.conclusionDate)}}</div>
+                <div class="label">{{this.task.description}}</div>
                 <div>
                     <button (click)="onComplete(this.task)" class="btn-floating waves-effect waves-light green">
                         <i class="material-icons">check</i>
@@ -46,6 +47,7 @@
     <ul class="task-list" *ngFor="let task of tasks">
         <li class="completed" *ngIf="checkTaskDone(this.task)">
             <div>
+                <div class="date">{{formatDate(this.task.conclusionDate)}}</div>
                 <div class="label">{{this.task.description}}</div>
                 <div>
                     <button (click)="onDelete(this.task.taskId)" class="btn-floating waves-effect waves-light red"><i
