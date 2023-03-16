@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
                     await this.RefreshList();
                 }, this.seconds * 1000);
 
-                this.toastr.success("Tarefa Criada", "Kanban Task");
+                this.toastr.success("Criando Tarefa", "Kanban Task");
             },
             err => { console.log(err); }
         );
@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
                     await this.RefreshList();
                 }, this.seconds * 1000);
 
-                this.toastr.success("Tarefa Excluída", "Kanban Task");
+                this.toastr.success("Excluindo Tarefa", "Kanban Task");
             },
             err => { console.log(err); }
         );
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
                     await this.RefreshList();
                 }, this.seconds * 1000);
 
-                this.toastr.success("Tarefa Atualizada", "Kanban Task");
+                this.toastr.success("Atualizando Tarefa", "Kanban Task");
             },
             err => { console.log(err); }
         );
