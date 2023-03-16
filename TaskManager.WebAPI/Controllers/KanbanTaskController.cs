@@ -32,8 +32,8 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int kanbanTaskId)
+        [HttpGet("{kanbanTaskId}")]
+        public async Task<IActionResult> Get([FromRoute] int kanbanTaskId)
         {
             var result = await _kanbanTaskService.GetKanbanTaskAsync(kanbanTaskId);
 
@@ -58,8 +58,8 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        public IActionResult Delete([FromQuery] int kanbanTaskId)
+        [HttpDelete("{kanbanTaskId}")]
+        public IActionResult Delete([FromRoute] int kanbanTaskId)
         {
             _queueService.DeleteTask(kanbanTaskId);
 
