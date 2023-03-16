@@ -59,7 +59,7 @@ namespace TaskManager.Service
                         var message = Encoding.UTF8.GetString(deliverEventArgs.Body.Span);
                         var newEvent = JsonSerializer.Deserialize<KanbanTaskEvent>(message);
 
-                        if (newEvent != null)
+                        if (newEvent?.KanbanTask != null)
                         {
 
                             switch (newEvent.EventType)
@@ -108,8 +108,10 @@ namespace TaskManager.Service
                                 body: body);
         }
 
-        public void UpdateTask(KanbanTask kanbanTask)
+        public void UpdateTask(int kanbanTaskId, KanbanTask kanbanTask)
         {
+            kanbanTask.TaskId = kanbanTaskId;
+
             using var channel = EstablishChannel();
             var kanbanTaskEvent = new KanbanTaskEvent { KanbanTask = kanbanTask, EventType = EventType.Update };
             var json = JsonSerializer.Serialize(kanbanTaskEvent);

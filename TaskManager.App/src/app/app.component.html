@@ -1,28 +1,33 @@
 <div class="container">
-    <h1>Angular Todo List App</h1>
-    <hr>
-    <form class="todo-form" #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <h3>Angular Todo List App</h3>
+    <br>
+    <form class="task-form" #f="ngForm" (ngSubmit)="onSubmit(f)">
         <div class="row">
+            <div class="input-field col s12">
+                <input type="text" name="description" id="description" ngModel>
+                <label for="description">Enter Task</label>
+            </div>
             <div class="input-field col s9">
-                <input type="text" name="title" id="title" ngModel>
-                <label for="title">Enter Task</label>
+                <input type="date" name="conclusionDate" id="conclusionDate" ngModel>
+                <label for="conclusionDate">ConclusionDate</label>
             </div>
             <div class="input-field col s3">
                 <button type="submit" class="btn waves-effect waves-light blue">
-                <i class="material-icons inline-icon">add</i>Add
+                    <i class="material-icons inline-icon">add</i>Add
                 </button>
             </div>
         </div>
     </form>
-    <ul class="todo-list" *ngFor="let todo of todos">
-        <li *ngIf="!this.todo.isComplete">
+    <ul class="task-list" *ngFor="let task of tasks">
+        <li *ngIf="!checkTaskDone(task)">
             <div>
-                <div>{{this.todo.title}}</div>
+                <div class="date">{{formatDate(this.task.conclusionDate)}}</div>
+                <div class="label">{{this.task.description}}</div>
                 <div>
-                    <button (click)="onComplete(this.todo.id)" class="btn-floating waves-effect waves-light green">
+                    <button (click)="onComplete(this.task)" class="btn-floating waves-effect waves-light green">
                         <i class="material-icons">check</i>
                     </button>
-                    <button (click)="onDelete(this.todo.id)" class="btn-floating waves-effect waves-light red">
+                    <button (click)="onDelete(this.task.taskId)" class="btn-floating waves-effect waves-light red">
                         <i class="material-icons">delete</i>
                     </button>
                 </div>
@@ -30,21 +35,22 @@
         </li>
     </ul>
 
-    <div *ngIf="!todos?.length" class="msg">
+    <div *ngIf="!tasks?.length" class="msg">
         Your Todo List is Empty!
     </div>
 
     <hr>
     <br>
 
-    <h1 id="completed-tasks">Completed Tasks</h1>
+    <h3>Completed Tasks</h3>
     <hr>
-    <ul class="todo-list" *ngFor="let todo of todos">
-        <li *ngIf="this.todo.isComplete">
+    <ul class="task-list" *ngFor="let task of tasks">
+        <li class="completed" *ngIf="checkTaskDone(this.task)">
             <div>
-                <div>{{this.todo.title}}</div>
+                <div class="date">{{formatDate(this.task.conclusionDate)}}</div>
+                <div class="label">{{this.task.description}}</div>
                 <div>
-                    <button (click)="onDelete(this.todo.id)" class="btn-floating waves-effect waves-light red"><i
+                    <button (click)="onDelete(this.task.taskId)" class="btn-floating waves-effect waves-light red"><i
                             class="material-icons">delete</i></button>
                 </div>
             </div>

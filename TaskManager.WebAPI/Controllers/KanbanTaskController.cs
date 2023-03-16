@@ -32,8 +32,8 @@ namespace TaskManager.WebAPI.Controllers
             return StatusCode(StatusCodes.Status202Accepted);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int kanbanTaskId)
+        [HttpGet("{kanbanTaskId}")]
+        public async Task<IActionResult> Get([FromRoute] int kanbanTaskId)
         {
             var result = await _kanbanTaskService.GetKanbanTaskAsync(kanbanTaskId);
 
@@ -48,18 +48,18 @@ namespace TaskManager.WebAPI.Controllers
             return (result.Any()) ? Ok(result) : NotFound();
         }
 
-        [HttpPut]
-        public IActionResult Update([FromBody] KanbanTask kanbanTask)
+        [HttpPut("{kanbanTaskId}")]
+        public IActionResult Update([FromBody] KanbanTask kanbanTask, [FromRoute] int kanbanTaskId)
         {
-            _queueService.UpdateTask(kanbanTask);
+            _queueService.UpdateTask(kanbanTaskId, kanbanTask);
 
-            _logger.LogInformation($"Update received. TaskId: {kanbanTask.TaskId}");
+            _logger.LogInformation($"Update received. TaskId: {kanbanTaskId}");
 
             return StatusCode(StatusCodes.Status202Accepted);
         }
 
-        [HttpDelete]
-        public IActionResult Delete([FromQuery] int kanbanTaskId)
+        [HttpDelete("{kanbanTaskId}")]
+        public IActionResult Delete([FromRoute] int kanbanTaskId)
         {
             _queueService.DeleteTask(kanbanTaskId);
 
