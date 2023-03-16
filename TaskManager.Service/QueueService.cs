@@ -59,7 +59,7 @@ namespace TaskManager.Service
                         var message = Encoding.UTF8.GetString(deliverEventArgs.Body.Span);
                         var newEvent = JsonSerializer.Deserialize<KanbanTaskEvent>(message);
 
-                        if (newEvent != null)
+                        if (newEvent?.KanbanTask != null)
                         {
 
                             switch (newEvent.EventType)
