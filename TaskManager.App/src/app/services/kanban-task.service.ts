@@ -6,8 +6,7 @@ import { KanbanTask } from '../models/KanbanTask.model';
   providedIn: 'root'
 })
 export class KanbanTaskService {
-  readonly baseURL = "http://localhost:24288/api/KanbanTask";
-  list: KanbanTask[]=[];
+  readonly baseURL = "http://localhost:5020/tasks";
 
   constructor(private http: HttpClient) { }
 
@@ -35,11 +34,10 @@ export class KanbanTaskService {
     });
   }
 
-  refreshList() {
-    this.http.get(this.baseURL)
-    .toPromise()
-    .then(res => {
-      this.list = res as KanbanTask[]
-    });
+  async refreshList() : Promise<KanbanTask[]> {
+    const res = await this.http.get(`${this.baseURL}/all`)
+      .toPromise();
+    console.log(res);
+    return res as KanbanTask[];
   }
 }

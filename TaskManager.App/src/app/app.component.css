@@ -1,5 +1,4 @@
-.container
-{
+.container {
     width: 600px;
     margin: 0 auto;
     background-color: #fff;
@@ -7,50 +6,45 @@
     padding: 20px 50px;
     border-radius: 5px;
 }
-.container h1
-{
-font-size: 40px;
-margin: 0;
+
+.container h1 {
+    font-size: 40px;
+    margin: 0;
 }
 
 
-.inline-icon
-{
-vertical-align: bottom;
-font-size: 18px !important;
+.inline-icon {
+    vertical-align: bottom;
+    font-size: 18px !important;
 }
 
 
-.task-list li
-{
-margin-top: 5px;
-border: 1px solid #bbb;
-padding: 5px 10px;
+.task-list li {
+    margin-top: 5px;
+    border: 1px solid #bbb;
+    border-radius: 25px;
+    padding: 5px 10px;
 }
 
 
-.task-list li div
-{
-display: flex;
-flex-direction: row;
-justify-content: space-between;
+.task-list li div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 
-.task-list button
-{
-margin-left: 5px;
+.task-list button {
+    margin-left: 5px;
 }
 
 
-.msg
-{
-color: #bbb;
-margin-bottom: 20px;
+.msg {
+    color: #bbb;
+    margin-bottom: 20px;
 }
 
 
-#completed-tasks
-{
-color: #4caf50;
+#completed-tasks {
+    color: #4caf50;
 }

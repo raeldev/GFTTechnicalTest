@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { KanbanTask } from "src/app/models/KanbanTask.model";
 import { KanbanTaskStatus } from './enums/KanbanTaskStatus.enum';
@@ -10,21 +10,34 @@ import { KanbanTaskService } from './services/kanban-task.service';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
+    // delay for wait worker persists
+    seconds: number = 4;
     tasks: KanbanTask[] = [];
 
     constructor(public service: KanbanTaskService,
         private toastr: ToastrService) { }
 
+    ngOnInit(){
+        this.RefreshList();
+    }
+    
     onSubmit(form: NgForm) {
-        if (!form.value.title || !form.value.conclusionDate)
+        if (!form.value.description)
+        {
             this.toastr.error("É necessário um título");
+            return;
+        }
 
         if (!form.value.conclusionDate)
+        {
             this.toastr.error("É necessário uma data de conclusão");
+            return;
+        }
 
-        let kanbanTask = new KanbanTask(form.value.title, KanbanTaskStatus.Doing, form.value.conclusionDate);
+        let kanbanTask = new KanbanTask(form.value.description, KanbanTaskStatus.Doing, form.value.conclusionDate);
+
         this.onInsert(kanbanTask, form);
     }
 
@@ -32,7 +45,12 @@ export class AppComponent {
         this.service.postKanbanTask(kanbanTask).subscribe(
             res => {
                 formData.form.reset();
-                this.service.refreshList();
+                
+                // wait worker persist
+                setTimeout(async () => {
+                    await this.RefreshList();
+                }, this.seconds * 1000);
+
                 this.toastr.success("Tarefa Criada", "Kanban Task");
             },
             err => { console.log(err); }
@@ -47,7 +65,12 @@ export class AppComponent {
     onDelete(taksId: number) {
         this.service.deleteKanbanTask(taksId).subscribe(
             res => {
-                this.service.refreshList();
+                
+                // wait worker persist
+                setTimeout(async () => {
+                    await this.RefreshList();
+                }, this.seconds * 1000);
+
                 this.toastr.success("Tarefa Excluída", "Kanban Task");
             },
             err => { console.log(err); }
@@ -57,10 +80,23 @@ export class AppComponent {
     updateTask(kanbanTask: KanbanTask) {
         this.service.putKanbanTask(kanbanTask).subscribe(
             res => {
-                this.service.refreshList();
+                
+                // wait worker persist
+                setTimeout(async () => {
+                    await this.RefreshList();
+                }, this.seconds * 1000);
+
                 this.toastr.success("Tarefa Atualizada", "Kanban Task");
             },
             err => { console.log(err); }
         );
+    }
+
+    checkTaskDone(kanbanTask: KanbanTask) {
+        return kanbanTask.status == KanbanTaskStatus.Done
+    }
+
+    async RefreshList() {
+        await this.service.refreshList().then(l => this.tasks = l);
     }
 }

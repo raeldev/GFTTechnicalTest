@@ -5,10 +5,14 @@ export class KanbanTask {
     description: string = "";
     status: KanbanTaskStatus = KanbanTaskStatus.New;
     conclusionDate: Date = new Date();
-    
+
     constructor(
         description: string,
         status: KanbanTaskStatus,
         conclusionDate: Date
-    ) { }
+    ) { 
+        this.description = description;
+        this.status = status;
+        this.conclusionDate = conclusionDate;
+    }
 }
