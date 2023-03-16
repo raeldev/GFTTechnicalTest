@@ -1,9 +1,9 @@
 <div class="container">
-    <h1>Angular Todo List App</h1>
-    <hr>
+    <h3>Angular Todo List App</h3>
+    <br>
     <form class="task-form" #f="ngForm" (ngSubmit)="onSubmit(f)">
         <div class="row">
-            <div class="input-field col s9">
+            <div class="input-field col s12">
                 <input type="text" name="description" id="description" ngModel>
                 <label for="description">Enter Task</label>
             </div>
@@ -21,7 +21,7 @@
     <ul class="task-list" *ngFor="let task of tasks">
         <li *ngIf="!checkTaskDone(task)">
             <div>
-                <div>{{this.task.taskId}} - {{this.task.description}}</div>
+                <div class="label">{{this.task.taskId}} - {{this.task.description}}</div>
                 <div>
                     <button (click)="onComplete(this.task)" class="btn-floating waves-effect waves-light green">
                         <i class="material-icons">check</i>
@@ -41,12 +41,12 @@
     <hr>
     <br>
 
-    <h1 id="completed-tasks">Completed Tasks</h1>
+    <h3>Completed Tasks</h3>
     <hr>
     <ul class="task-list" *ngFor="let task of tasks">
-        <li *ngIf="checkTaskDone(this.task)">
+        <li class="completed" *ngIf="checkTaskDone(this.task)">
             <div>
-                <div>{{this.task.description}}</div>
+                <div class="label">{{this.task.description}}</div>
                 <div>
                     <button (click)="onDelete(this.task.taskId)" class="btn-floating waves-effect waves-light red"><i
                             class="material-icons">delete</i></button>
