@@ -4,8 +4,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 5020
 
-RUN apt update && apt install -y curl
-
 ENV ASPNETCORE_ENVIRONMENT="Development"
 ENV ASPNETCORE_URLS="http://*:5020"
 ENV RABBITMQ_CONNECTION_STRING="rabbitserver"
