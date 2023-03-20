@@ -16,6 +16,8 @@ Execute o seguinte comando no diretorio da solution (.sln):
 
 <code>docker-compose -f docker-compose.yml up</code>
 
+[TaskManager (localhost:80)](http://localhost/)
+
 </br>
 
 # Manual Mode With Docker 
@@ -66,6 +68,3 @@ Esse projeto utiliza um [Cluster free de MongoDB via Atlas Cloud](https://www.mo
 - Rode instale as dependências com <code>npm install</code> depois rode com <code>npm run start</code>
 
 </br>
-
-### **To Do**
-- :white_square_button: Add Angular Project to docker compose file
