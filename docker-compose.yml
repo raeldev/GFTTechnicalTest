@@ -52,6 +52,14 @@ services:
       - rabbitserver
     links: 
         - rabbitserver
+    
+  taskmanager.webapp:
+    build:
+      context: TaskManager.App
+    ports:
+      - "80:80"
+    networks:
+      - taskmanagernet
 
 networks:
   taskmanagernet:
